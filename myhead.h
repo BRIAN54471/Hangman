@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "topic.h"
+#include "difficulty.h"
 
 // 打印單詞狀態的函數
 void printWordStatus(const char* word, const int* revealed) {
@@ -12,11 +14,6 @@ void printWordStatus(const char* word, const int* revealed) {
         printf("%c ", revealed[i] ? word[i] : '_');  // 如果字母已揭示，打印字母，否則打印底線
     }
     printf("\n");  // 揭示狀態後換行
-}
-
-// 從單詞列表中隨機選擇一個單詞的函數
-char* chooseRandomWord(char* words[], int numWords) {
-    return words[rand() % numWords];  // 從單詞列表中隨機選擇一個單詞並返回
 }
 
 // 初始化遊戲狀態的函數
@@ -29,94 +26,6 @@ void initializeGame(char** chosenWord, int* wordLength, int revealed[], int* wro
     *wrongGuesses = 0;  // 初始化錯誤猜測計數器
     srand(time(NULL));  // 使用當前時間初始化隨機數生成器
 }
-
-// Function to choose the topic of the words
-int selectTopic() {
-    int topic;  // Define the topic choice
-    printf("Select topic:\n");
-    printf("1. Animal\n");    
-    printf("2. Fruits\n");
-    printf("3. Countries\n");
-    printf("4. Professions\n");
-    printf("5. Sports\n");
-    printf("Enter your choice: ");
-    scanf("%d", &topic);
-    return topic;
-}
-
-#define MAX_LINE_LENGTH 1024
-#define MAX_CELL_LENGTH 256
-#define MAX_COLUMNS 5
-
-void read_hangman_csv(const char *file_path) {
-    FILE *file = fopen(file_path, "r");
-    if (!file) {
-        perror("打開檔案時發生錯誤");
-        return;
-    }
-
-    char line[MAX_LINE_LENGTH];
-    char themes[MAX_COLUMNS][MAX_CELL_LENGTH] = {0};
-    int line_count = 0;
-
-    // 讀取檔案第一行作為主題
-    if (fgets(line, sizeof(line), file)) {
-        char *token;
-        int column = 0;
-
-        token = strtok(line, ",");
-        while (token != NULL && column < MAX_COLUMNS) {
-            strncpy(themes[column], token, MAX_CELL_LENGTH);
-            themes[column][strcspn(themes[column], "\n")] = '\0'; // 去除換行符
-            column++;
-        }
-    }
-
-    // 打印主題
-    for (int i = 0; i < MAX_COLUMNS; i++) {
-        printf("%s\t", themes[i]);
-    }
-    printf("\n");
-
-    // 讀取並打印檔案剩餘內容
-    while (fgets(line, sizeof(line), file)) {
-        char *token;
-        int column = 0;
-
-        token = strtok(line, ",");
-        while (token != NULL && column < MAX_COLUMNS) {
-            printf("%s\t", token);
-            token = strtok(NULL, ",");
-            column++;
-        }
-        printf("\n");
-    }
-
-    fclose(file);
-}
-
-// 定義難度選擇
-int selectDifficulty() {
-    int difficulty;  // 定義難度選擇
-    printf("Select difficulty:\n");
-    printf("1. Easy   (10 wrong guesses)\n");
-    printf("2. Medium ( 7 wrong guesses)\n");
-    printf("3. Hard   ( 5 wrong guesses)\n");
-    printf("Enter your choice: ");
-    scanf("%d", &difficulty);
-    switch (difficulty) {
-        case 1:
-            return 10;
-        case 2:
-            return 7;
-        case 3:
-            return 5;
-        default:
-            printf("Invalid choice. Setting difficulty to medium.\n");
-            return 7;
-    }
-}
-
 // 遊戲規則的函數
 void gameRule(const char* chosenWord, int wordLength, int revealed[], int* wrongGuesses, int difficulty) {
     int maxWrongGuesses = difficulty;  // 設置最大錯誤猜測次數

@@ -1,6 +1,5 @@
 #include "myhead.h"
 
-
 int main() {
     
     char playAgain;  // 定義變量以存儲用戶是否再玩一局的選擇
@@ -10,6 +9,9 @@ int main() {
     int revealed[50];  // 定義揭示狀態數組
     int wrongGuesses;  // 定義錯誤猜測計數器
     int round = 1;  // 定義變量以記錄回合數
+
+    char data[MAX_ROWS][MAX_COLS][MAX_LINE_LENGTH] = {0};
+    read_hangman_csv("hangman_words.csv", data);  // 讀取單詞列表
     printf("Welcome to Hangman!\n");  // 歡迎訊息
     int difficulty = selectDifficulty();  // 選擇難度
     do {
