@@ -30,16 +30,3 @@ int main() {
     printf("Thank you for playing!\n");  // 顯示感謝訊息
     return 0;  // 結束程式
 }
-
-
-/*
-// 測試
-int main(){
-    char data[MAX_ROWS][MAX_COLS][MAX_LINE_LENGTH] = {0};
-    read_hangman_csv("hangman_words.csv", data);
-    int topic = selectTopic();
-    // Print the data to verify the contents
-    printf("random word: %s, from topic: %d\n", chooseRandomWord(topic, data), topic) ;
-    return 0;
-}
-*/
